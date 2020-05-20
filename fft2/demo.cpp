@@ -61,7 +61,14 @@ int main(int argc, char **argv) {
     gnuplotPipe = popen ("gnuplot -persistent", "w");
     fprintf(gnuplotPipe, "plot '-' ps 0.1 lt 6\n");
     for (int i=0; i<N*P; i++) fprintf(gnuplotPipe, "%lf\n", 10*log10(powvec[i]));
-    //for (int i=0; i<N*P; i++) fprintf(gnuplotPipe, "%lf\n", powvec[i]);
+    fprintf(gnuplotPipe, "e");
+    pclose(gnuplotPipe);
+
+    // compute inverse fft and plot
+    Fft::inverseTransform(real_vec_pad, imag_vec_pad, N*P);
+    gnuplotPipe = popen ("gnuplot -persistent", "w");
+    fprintf(gnuplotPipe, "plot '-' ps 0.1 lt 6\n");
+    for (int i=0; i<N*P; i++) fprintf(gnuplotPipe, "%lf\n", real_vec_pad[i]);
     fprintf(gnuplotPipe, "e");
     pclose(gnuplotPipe);
 

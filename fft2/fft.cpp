@@ -9,8 +9,16 @@ using std::size_t;
 
 static size_t reverseBits(size_t x, unsigned int n); // Private function prototype
 
-void Fft::transform(double *real, double *imag, int n) {
-    transformRadix2(real, imag, n);
+void Fft::transform        (double *real, double *imag, int n) { 
+    transformRadix2 (real, imag, n); 
+}
+
+void Fft::inverseTransform (double *real, double *imag, int n) { 
+    transformRadix2 (imag, real, n); 
+    for (int i=0; i<n; i++) {
+        real[i] /= n;
+        imag[i] /= n;
+    }
 }
 
 void Fft::transformRadix2(double *real, double *imag, int n) {
