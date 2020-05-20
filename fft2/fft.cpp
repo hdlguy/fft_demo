@@ -9,11 +9,11 @@ using std::size_t;
 
 static size_t reverseBits(size_t x, unsigned int n); // Private function prototype
 
-void Fft::transform        (double *real, double *imag, int n) { 
+void Fft::transform        (fft_float *real, fft_float *imag, int n) { 
     transformRadix2 (real, imag, n); 
 }
 
-void Fft::inverseTransform (double *real, double *imag, int n) { 
+void Fft::inverseTransform (fft_float *real, fft_float *imag, int n) { 
     transformRadix2 (imag, real, n); 
     for (int i=0; i<n; i++) {
         real[i] /= n;
@@ -21,7 +21,7 @@ void Fft::inverseTransform (double *real, double *imag, int n) {
     }
 }
 
-void Fft::transformRadix2(double *real, double *imag, int n) {
+void Fft::transformRadix2(fft_float *real, fft_float *imag, int n) {
 	// Compute levels = floor(log2(n))
 	unsigned int levels;
 	{
@@ -36,8 +36,8 @@ void Fft::transformRadix2(double *real, double *imag, int n) {
 	}
 	
 	// Trignometric tables
-	double cosTable[n/2];
-	double sinTable[n/2];
+	fft_float cosTable[n/2];
+	fft_float sinTable[n/2];
 	for (size_t i = 0; i < n / 2; i++) {
 		cosTable[i] = cos(2 * M_PI * i / n);
 		sinTable[i] = sin(2 * M_PI * i / n);
@@ -47,7 +47,7 @@ void Fft::transformRadix2(double *real, double *imag, int n) {
 	for (size_t i = 0; i < n; i++) {
 		size_t j = reverseBits(i, levels);
 		if (j > i) {
-			double temp = real[i];
+			fft_float temp = real[i];
 			real[i] = real[j];
 			real[j] = temp;
 			temp = imag[i];
@@ -62,8 +62,8 @@ void Fft::transformRadix2(double *real, double *imag, int n) {
 		size_t tablestep = n / size;
 		for (size_t i = 0; i < n; i += size) {
 			for (size_t j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-				double tpre =  real[j+halfsize] * cosTable[k] + imag[j+halfsize] * sinTable[k];
-				double tpim = -real[j+halfsize] * sinTable[k] + imag[j+halfsize] * cosTable[k];
+				fft_float tpre =  real[j+halfsize] * cosTable[k] + imag[j+halfsize] * sinTable[k];
+				fft_float tpim = -real[j+halfsize] * sinTable[k] + imag[j+halfsize] * cosTable[k];
 				real[j + halfsize] = real[j] - tpre;
 				imag[j + halfsize] = imag[j] - tpim;
 				real[j] += tpre;
