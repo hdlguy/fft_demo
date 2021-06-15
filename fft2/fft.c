@@ -1,19 +1,25 @@
-#include <cmath>
-#include <cstdint>
+//#include <cmath>
+#include <math.h>
+//#include <cstdint>
+//#include <stdint.h>
+#include <stddef.h>
 //#include <vector>
-#include "fft.hpp"
+#include "fft.h"
+#include <stdio.h>
 
-using std::size_t;
+//using std::size_t;
 //using std::vector;
 
 
 static size_t reverseBits(size_t x, unsigned int n); // Private function prototype
 
-void Fft::transform        (fft_float *real, fft_float *imag, int n) { 
+//void Fft::transform        (fft_float *real, fft_float *imag, int n) { 
+void transform        (fft_float *real, fft_float *imag, int n) { 
     transformRadix2 (real, imag, n); 
 }
 
-void Fft::inverseTransform (fft_float *real, fft_float *imag, int n) { 
+//void Fft::inverseTransform (fft_float *real, fft_float *imag, int n) { 
+void inverseTransform (fft_float *real, fft_float *imag, int n) { 
     transformRadix2 (imag, real, n); 
     for (int i=0; i<n; i++) {
         real[i] /= n;
@@ -21,7 +27,8 @@ void Fft::inverseTransform (fft_float *real, fft_float *imag, int n) {
     }
 }
 
-void Fft::transformRadix2(fft_float *real, fft_float *imag, int n) {
+//void Fft::transformRadix2(fft_float *real, fft_float *imag, int n) {
+void transformRadix2(fft_float *real, fft_float *imag, int n) {
 	// Compute levels = floor(log2(n))
 	unsigned int levels;
 	{
@@ -32,7 +39,7 @@ void Fft::transformRadix2(fft_float *real, fft_float *imag, int n) {
 			temp >>= 1;
 		}
 		if (1u << levels != n)
-			throw "Length is not a power of 2";
+			printf( "Length is not a power of 2");
 	}
 	
 	// Trignometric tables

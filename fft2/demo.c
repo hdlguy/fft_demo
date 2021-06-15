@@ -1,12 +1,14 @@
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
+//#include <cmath>
+//#include <cstdlib>
+//#include <iostream>
+#include <stdio.h>
 //#include <vector>
 //#include <array>
-#include "fft.hpp"
+#include <math.h>
+#include "fft.h"
 
-using std::cout;
-using std::endl;
+//using std::cout;
+//using std::endl;
 //using std::vector;
 //using std::array;
 
@@ -52,7 +54,8 @@ int main(int argc, char **argv) {
     pclose(gnuplotPipe);
 
     // compute and convert to power
-    Fft::transform(real_vec_pad, imag_vec_pad, N*P);
+    //Fft::transform(real_vec_pad, imag_vec_pad, N*P);
+    transform(real_vec_pad, imag_vec_pad, N*P);
     fft_float powvec[N*P];
     for(int i=0; i<N*P; i++) powvec[i] = pow(real_vec_pad[i]/A,2.0) + pow(imag_vec_pad[i]/A,2.0);
 
@@ -64,13 +67,14 @@ int main(int argc, char **argv) {
     pclose(gnuplotPipe);
 
     // compute inverse fft and plot
-    Fft::inverseTransform(real_vec_pad, imag_vec_pad, N*P);
+    //Fft::inverseTransform(real_vec_pad, imag_vec_pad, N*P);
+    inverseTransform(real_vec_pad, imag_vec_pad, N*P);
     gnuplotPipe = popen ("gnuplot -persistent", "w");
     fprintf(gnuplotPipe, "plot '-' ps 0.1 lt 6\n");
     for (int i=0; i<N*P; i++) fprintf(gnuplotPipe, "%lf\n", imag_vec_pad[i]);
     fprintf(gnuplotPipe, "e");
     pclose(gnuplotPipe);
 
-    return EXIT_SUCCESS;
+    return 1;
 }
 

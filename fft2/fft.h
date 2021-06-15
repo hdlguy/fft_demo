@@ -1,9 +1,8 @@
-#pragma once
+//#pragma once
 
 typedef double fft_float;
 
 
-namespace Fft {
 
 	 //* Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
 	 //* The vector can have any length. This is a wrapper function.
@@ -14,4 +13,3 @@ namespace Fft {
 	 //* The vector's length must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
 	void transformRadix2(fft_float *real, fft_float *imag, int n);
 	
-}
